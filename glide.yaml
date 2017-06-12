@@ -1,0 +1,7 @@
+package: github.com/howdoicomputer/terrashovel
+import:
+- package: github.com/mitchellh/go-homedir
+- package: github.com/spf13/cobra
+- package: github.com/spf13/viper
+- package: github.com/spf13/jwalterweatherman
+- package: github.com/GeertJohan/go.rice
