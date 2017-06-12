@@ -14,9 +14,6 @@ suites:
         - name: default
           attributes:
             name: name
-          controls:
-            - ec2_server_spec
-            - state_file_spec
     provisioner:
       name: terraform
       apply_timeout: 600

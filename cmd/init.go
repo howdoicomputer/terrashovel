@@ -31,6 +31,7 @@ var initCmd = &cobra.Command{
 	Use:     "init",
 	Short:   "Generate a module directory.",
 	Long:    `Generate a module directory.`,
+	Aliases: []string{"create"},
 	PreRunE: ArgLenCheck,
 	Run:     NewModule,
 }
@@ -45,28 +46,56 @@ func ArgLenCheck(cmd *cobra.Command, args []string) error {
 
 func NewModule(cmd *cobra.Command, args []string) {
 	newModulePath := strings.Join(args, "")
-	newModuleDirs(newModulePath)
-	newModuleTemplates(newModulePath)
+	err := newModuleDirs(newModulePath)
+
+	if err != nil {
+		jww.ERROR.Println(err)
+		return
+	}
+
+	err = newModuleTemplates(newModulePath)
+
+	if err != nil {
+		jww.ERROR.Println(err)
+		return
+	}
+
+	fmt.Println(fmt.Sprintf(`
+Congratulations! Your new module has been instantiated!
+
+If you want to try it out:
+
+cd %s
+bundle install
+bundle exec kitchen test
+`, newModulePath))
 }
 
-func newModuleDirs(newModulePath string) {
+func newModuleDirs(newModulePath string) error {
+	err := os.Mkdir(newModulePath, os.ModePerm)
+
+	if err != nil {
+		return err
+	}
+
 	dirs := []string{
-		newModulePath,
 		filepath.Join(newModulePath, "test"),
 		filepath.Join(newModulePath, "test", "fixtures", "default"),
 		filepath.Join(newModulePath, "test", "integration", "default"),
 		filepath.Join(newModulePath, "test", "integration", "default", "controls"),
 	}
 
-	for _, element := range dirs {
-		err := os.MkdirAll(element, os.ModePerm)
+	for _, dir := range dirs {
+		err := os.MkdirAll(dir, os.ModePerm)
 		if err != nil {
-			fmt.Println(err)
+			return err
 		}
 	}
+
+	return nil
 }
 
-func newModuleTemplates(newModulePath string) {
+func newModuleTemplates(newModulePath string) error {
 	specDir := "test/integration/default/controls"
 	fixturesDir := "test/fixtures/default"
 
@@ -89,29 +118,29 @@ func newModuleTemplates(newModulePath string) {
 
 		templateBox, err := rice.FindBox("../templates")
 		if err != nil {
-			jww.ERROR.Println(err)
+			return err
 		}
 
 		templateString, err := templateBox.String(source)
-
 		if err != nil {
-			jww.ERROR.Println(err)
+			return err
 		}
 
 		template := template.Must(template.New(fileName).Parse(templateString))
 		file, err := os.Create(destination)
-
 		if err != nil {
-			jww.ERROR.Println(err)
+			return err
 		}
 
 		err = template.Execute(file, template)
 		if err != nil {
-			jww.ERROR.Println(err)
+			return err
 		}
 
 		file.Close()
 	}
+
+	return nil
 }
 
 func init() {

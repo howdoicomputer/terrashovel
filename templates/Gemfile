@@ -2,7 +2,7 @@
 source 'https://rubygems.org'
 
 group :testing do
-  gem 'kitchen-terraform'
   gem 'awspec'
+  gem 'kitchen-terraform'
   gem 'rake'
 end

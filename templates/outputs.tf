@@ -1,3 +1,3 @@
-output "aws_instance.id" {
-  value = "${aws_instance.foo.id}"
+output "aws_instance_name" {
+  value = "${aws_instance.foo.tags.Name}"
 }
