@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 
 group :testing do
   gem 'awspec'
-  gem 'kitchen-terraform'
+  gem 'kitchen-terraform', '0.7.0'
+  gem 'inspec', '1.29.0'
   gem 'rake'
 end

@@ -66,8 +66,8 @@ Congratulations! Your new module has been instantiated!
 If you want to try it out:
 
 cd %s
-bundle install
-bundle exec kitchen test
+make build
+make test
 `, newModulePath))
 }
 
@@ -87,6 +87,7 @@ func newModuleDirs(newModulePath string) error {
 
 	for _, dir := range dirs {
 		err := os.MkdirAll(dir, os.ModePerm)
+
 		if err != nil {
 			return err
 		}
@@ -107,6 +108,8 @@ func newModuleTemplates(newModulePath string) error {
 		"README.md":                     filepath.Join(newModulePath, "README.md"),
 		"Gemfile":                       filepath.Join(newModulePath, "Gemfile"),
 		"kitchen.yml":                   filepath.Join(newModulePath, ".kitchen.yml"),
+		"Dockerfile":                    filepath.Join(newModulePath, "Dockerfile"),
+		"Makefile":                      filepath.Join(newModulePath, "Makefile"),
 		fixturesDir + "/module.tf":      filepath.Join(newModulePath, fixturesDir, "module.tf"),
 		fixturesDir + "/outputs.tf":     filepath.Join(newModulePath, fixturesDir, "outputs.tf"),
 		specDir + "/ec2_server_spec.rb": filepath.Join(newModulePath, specDir, "ec2_server_spec.rb"),
