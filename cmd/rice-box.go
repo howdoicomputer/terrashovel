@@ -20,8 +20,8 @@ func init() {
 	}
 	file4 := &embedded.EmbeddedFile{
 		Filename:    "Makefile",
-		FileModTime: time.Unix(1510944722, 0),
-		Content:     string(".PHONY: test\n\ndefault: | build\n\nbuild:\n\tdocker build . -t foobar\n\ntest:\n\tdocker run --rm -v ~/.aws:/root/.aws foobar bundle exec kitchen test\n\nenv:\n\tdocker run --rm -v ~/.aws:/root/.aws -it foobar /bin/bash\n"),
+		FileModTime: time.Unix(1510944744, 0),
+		Content:     string(".PHONY: test\n\ndefault: | build test\n\nbuild:\n\tdocker build . -t foobar\n\ntest:\n\tdocker run --rm -v ~/.aws:/root/.aws foobar bundle exec kitchen test\n\nenv:\n\tdocker run --rm -v ~/.aws:/root/.aws -it foobar /bin/bash\n"),
 	}
 	file5 := &embedded.EmbeddedFile{
 		Filename:    "README.md",
@@ -77,7 +77,7 @@ func init() {
 	// define dirs
 	dir1 := &embedded.EmbeddedDir{
 		Filename:   "",
-		DirModTime: time.Unix(1510944722, 0),
+		DirModTime: time.Unix(1510944744, 0),
 		ChildFiles: []*embedded.EmbeddedFile{
 			file2, // "Dockerfile"
 			file3, // "Gemfile"
@@ -158,7 +158,7 @@ func init() {
 	// register embeddedBox
 	embedded.RegisterEmbeddedBox(`../templates`, &embedded.EmbeddedBox{
 		Name: `../templates`,
-		Time: time.Unix(1510944722, 0),
+		Time: time.Unix(1510944744, 0),
 		Dirs: map[string]*embedded.EmbeddedDir{
 			"":                                  dir1,
 			"test":                              dira,
